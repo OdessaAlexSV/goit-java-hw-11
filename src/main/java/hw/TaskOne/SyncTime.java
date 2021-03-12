@@ -6,6 +6,7 @@ import java.util.Date;
 public class SyncTime {
     private int timer;
     private int counterSec = 1;
+    private SimpleDateFormat formatForDateNow = new SimpleDateFormat("hh:mm:ss");
 
     public SyncTime(int timer) {
         this.timer = timer;
@@ -14,20 +15,20 @@ public class SyncTime {
     public synchronized void everySec() throws InterruptedException {
         while (timer > 0) {
             Thread.sleep(1000);
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("hh:mm:ss");
-            System.out.println(formatForDateNow.format(new Date()));
+            System.out.println(formatForDateNow.format(new Date()) +", " + counterSec + " sec");
             counterSec++;
             timer--;
             notifyAll();
             while (counterSec % 5 == 0) {
+                Thread.sleep(1000);
+                System.out.println(formatForDateNow.format(new Date()) +", " + counterSec + " sec");
                 if (timer <= 0) {
                     break;
                 }
                 wait();
             }
         }
-        counterSec--;
-        System.out.println("Time is over. Passed " + counterSec + " sec.");
+        System.out.println("Time is over. Passed " + (counterSec-1) + " sec in total.");
     }
 
     public synchronized void every5Sec() throws InterruptedException {
@@ -39,7 +40,6 @@ public class SyncTime {
                 wait();
             }
             if (timer > 0) {
-                Thread.sleep(1000);
                 System.out.println("5 sec passed");
                 counterSec++;
                 timer--;

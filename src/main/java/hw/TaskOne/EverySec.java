@@ -2,7 +2,7 @@ package main.java.hw.TaskOne;
 
 
 public class EverySec implements Runnable {
-    SyncTime timer;
+    private SyncTime timer;
     EverySec(SyncTime timer) {
         this.timer = timer;
     }
